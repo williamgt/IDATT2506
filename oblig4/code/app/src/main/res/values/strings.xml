@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Games I\'ve enjoyed</string>
+    <string name="placeholder">PLACEHOLDER</string>
+    <string name="next">Next</string>
+    <string name="prev">Previous</string>
+
+    <string-array name="titles">
+        <item>The Legend of Zelda: The Minish Cap</item>
+        <item>Pokémon LeafGreen</item>
+        <item>Pokémon HeartGold</item>
+        <item>Pokémon Platnium</item>
+        <item>Bloodborne</item>
+        <item>Dark Souls</item>
+        <item>Dark Souls III</item>
+        <item>Elden Ring</item>
+    </string-array>
+
+    <!--REMEMBER TO ESCAPE '-->
+    <string-array name="descriptions">
+        <item>
+            Within the Zelda chronology, The Minish Cap takes place between Skyward Sword and Four Swords, making it the second story in that timeline.
+            As a prequel to Four Swords, The Minish Cap tells the backstory of Vaati and the birth of the Four Sword, which both feature in Four Swords and its sequel Four Swords Adventures.
+        </item>
+        <item>
+            Pokémon LeafGreen takes place mostly in the fictional region of Kanto.
+            This is one distinct region of many in the Pokémon world, which includes varied geographical habitats for the Pokémon species, human-populated towns and cities, and routes between locations.
+        </item>
+        <item>
+            Pokemon HeartGold take place in the Johto and Kanto regions of the franchise\'s fictional universe.
+            The universe centers on the existence of creatures, called Pokemon, with special abilities.
+            The silent protagonist is a young Pokemon trainer who lives in a small town referred to as New Bark Town.
+            We follow the protagonist on a journey through Johto and Kanto, catching all sorts of pokemon.
+        </item>
+        <item>
+            In Platinum, players control either Lucas or Dawn and start with one of three Pokémon given to them from Professor Rowan.
+            The mascot Pokémon is Giratina, who plays a central role in the game\'s plot.
+            While it only had one form in Diamond and Pearl, it is given a new alternate form (called "Origin Forme") alongside a new area called the Distortion World, which features altered physics from the normal land of Sinnoh, where the game takes place.
+            The gameplay stays true to traditional Pokémon game mechanics. Players explore a large area, which ranges from mountains to bodies of water, grasslands, populated areas, and snowy expanses.
+            Similar to previous titles, players have their Pokémon fight turn-based battles against other Pokémon.
+        </item>
+        <item>
+            The game is played from a third-person perspective.
+            Players control a customizable protagonist, and the gameplay is focused on strategic weapons-based combat and exploration.
+            Players battle varied enemies while using items such as swords and firearms, exploring different locations, interacting with non-player characters, and unravelling the city\'s mysteries.
+            Bloodborne began development in 2012 under the working title of Project Beast.
+            Bearing many similarities to the Dark Souls series of games by the same developer and director, Bloodborne was inspired by the literary works of authors H. P. Lovecraft and Bram Stoker and the architectural design of real-world locations in countries such as Romania, the Czech Republic and Scotland.
+        </item>
+        <item>
+            The game takes place in the kingdom of Lordran, where players assume the role of a cursed undead character who begins a pilgrimage to discover the fate of their kind.
+        </item>
+        <item>
+            Set in the Kingdom of Lothric, a bell has rung to signal that the First Flame, responsible for maintaining the Age of Fire, is dying out.
+            As has happened many times before, the coming of the Age of Dark produces the undead: cursed beings that rise after death.
+            The Age of Fire can be prolonged with the linking of the fire, a ritual in which great lords and heroes sacrifice their souls to rekindle the First Flame.
+            However, Prince Lothric, the chosen linker for this age, abandoned his duty and chose to watch the flame die from afar.
+            The bell is the last hope for the Age of Fire, resurrecting previous Lords of Cinder (heroes who linked the flame in past ages) to attempt to link the fire again.
+        </item>
+        <item>
+            Elden Ring takes place in the Lands Between, a fictional landmass ruled over by several demigods.
+            It was previously ruled over by the immortal Queen Marika, who acted as keeper of the Elden Ring, a powerful force that manifested as the physical concept of order.
+            When Marika eventually shattered the Elden Ring and disappeared, her demigod children began warring over pieces of the Ring in an event called the Shattering.
+            Each demigod possesses a shard of the Ring called a Great Rune, which corrupts them with power.
+            In the game, the player character is a Tarnished, one of a group of exiles from the Lands Between who are summoned back after the Shattering.
+            As one of the Tarnished, the player must traverse the realm to repair the Elden Ring and become the Elden Lord.
+        </item>
+    </string-array>
+
+    <integer-array name="images">
+        <item>@drawable/minish_cap</item>
+        <item>@drawable/leaf_green</item>
+        <item>@drawable/heart_gold</item>
+        <item>@drawable/platinum</item>
+        <item>@drawable/bloodborne</item>
+        <item>@drawable/dark_souls</item>
+        <item>@drawable/dark_souls_iii</item>
+        <item>@drawable/elden_ring</item>
+    </integer-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">client</string>
+    <string name="hello_hint">Hei</string>
+    <string name="send">Send</string>
+    <string name="sent">Sent \n</string>
+    <string name="received">Received \n</string>
+</resources>

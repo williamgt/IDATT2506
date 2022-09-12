@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">calculator_ish</string>
+    <string name="add">Adder</string>
+    <string name="multiply">Multipliser</string>
+    <string name="ans">Svar</string>
+    <string name="upper_limit">Øvre grense</string>
+    <string name="correct">Riktig!</string>
+    <string name="wrong">Feil. Riktig svar er </string>
+</resources>

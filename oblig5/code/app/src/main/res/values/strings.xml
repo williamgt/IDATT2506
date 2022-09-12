@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Guessing game</string>
+    <string name="name_hint">Knut</string>
+    <string name="enter_name">Enter name</string>
+    <string name="card_hint">123</string>
+    <string name="number_hint">0</string>
+    <string name="enter_card">Enter card number</string>
+    <string name="start">Start</string>
+    <string name="restart">Restart</string>
+    <string name="guess">Guess</string>
+</resources>
