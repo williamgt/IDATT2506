@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">persistence</string>
+    <string name="info">Bruk menyen til å hente ut informasjon</string>
+    <string name="settings">Innstillinger</string>
+
+    <string name="bg_title">Bakgrunn</string>
+    <string name="bg">bg</string>
+    <string name="bg_default_value">WHITE</string>
+
+    <string name="back_button">Tilbake</string>
+</resources>
