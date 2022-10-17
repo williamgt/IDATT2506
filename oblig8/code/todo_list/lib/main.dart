@@ -52,9 +52,9 @@ class _ToDoListState extends State<ToDoList> {
             controller: eCtrl,
             focusNode: fNode,
             onSubmitted: (value) {
-              _todos.add(ToDo(value));
+              _todos.insert(0, ToDo(value));
               eCtrl.clear(); // Clear the Text area
-              fNode.requestFocus();
+              fNode.requestFocus(); // Put focus back on keyboard
               setState(() {}); // Redraw the Stateful Widget
             },
             decoration: const InputDecoration(
@@ -69,8 +69,31 @@ class _ToDoListState extends State<ToDoList> {
             padding: const EdgeInsets.all(16.0),
             itemBuilder: (context, index) {
               return ListTile(
+                onTap: () {
+                  //_todos[index].isDone ? _todos[index].setDone = false : _todos[index].setDone = true;
+                  //If element is done when tapped, must change state to undone. Move to top, TODO change in future
+                  if(_todos[index].isDone) {
+                    setState(() {
+                      _todos[index].setDone = false;
+                      var todo = _todos.removeAt(index);
+                      _todos.insert(0, todo);
+                    });
+                    
+                  }
+                  //If it is not done, change state to done and move to the bottom
+                  else {
+                    setState(() {
+                     _todos[index].setDone = true;
+                     var todo = _todos.removeAt(index);
+                     _todos.add(todo);
+                    });
+                    
+                  }
+                 // setState(() {}); 
+                  },
+                tileColor: _todos[index].isDone ? Colors.grey : null,
                 title: Text(
-                  _todos[index].description,
+                  _todos[index].toString(), //TODO change to correct after debug
                   style: _biggerFont,
                 ),
               );
