@@ -52,7 +52,7 @@ class _ToDoListState extends State<ToDoList> {
             controller: eCtrl,
             focusNode: fNode,
             onSubmitted: (value) {
-              _todos.insert(0, ToDo(value));
+              _todos.insert(0, ToDo(value)); // Add to start of _todos
               eCtrl.clear(); // Clear the Text area
               fNode.requestFocus(); // Put focus back on keyboard
               setState(() {}); // Redraw the Stateful Widget
