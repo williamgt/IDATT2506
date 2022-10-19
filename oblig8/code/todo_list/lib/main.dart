@@ -118,6 +118,7 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: TextField(
+            enabled: _selectedListIndex > -1 && _selectedListIndex <= _todoLists.length,
             controller: eCtrl,
             focusNode: fNode,
             onSubmitted: (value) {
