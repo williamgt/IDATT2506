@@ -200,8 +200,8 @@ Future _addToDoListDialog(BuildContext context) async {
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, PopUpResult.cancel),
             child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context, PopUpResult.cancel),
             ),
           TextButton(
             child: const Text('Approve'),
@@ -230,8 +230,8 @@ Future<PopUpResult?> _deleteToDoListDialog(BuildContext context, String listName
         content: Text('Are you sure you want to delete $listName?'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, PopUpResult.cancel),
             child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context, PopUpResult.cancel),
           ),
           TextButton(
             child: const Text('Approve'),
