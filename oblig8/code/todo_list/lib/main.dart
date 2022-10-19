@@ -57,45 +57,58 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
     return Column(
       children: [
         SizedBox(
-          height: 60,
-          child: ListView.builder(
-              itemCount: _todoLists.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: ((context, index) {
-                //calculating width of list elements
-                double w = _todoLists[index].title.length * 10 + 2*18; //10 per character and add offset equal to font size
-                if (w < 100) w += 30; //If w is small, add more hoping it looks good
-                return Card(
-                  child: Container( //Need container cuz listtile takes too much space
-                    width: w,
-                    child: ListTile(
-                      //X button at end of todo list
-                      trailing: Container( //Need container cuz iconbutton takes too much space
-                        width: 20,
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: const Icon(
-                            Icons.cancel_rounded,
+            height: 60,
+            child: Row(
+              children: <Widget>[
+                //Button or adding more lists
+                Container(
+                  width: 20,
+                  margin: const EdgeInsets.all(10),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => print('Plust'),
+                    icon: const Icon(Icons.add))),
+                //List of todo lists
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: _todoLists.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: ((context, index) {
+                        //calculating width of list elements
+                        double w = _todoLists[index].title.length * 10 + 2 * 18; //10 per character and add offset equal to font size
+                        if (w < 100) w += 30; //If w is small, add more hoping it looks good
+                        return Card(
+                          child: Container( //Need container cuz listtile takes too much space
+                            width: w,
+                            child: ListTile(
+                            //X button at end of todo list
+                              trailing: Container(
+                                //Need container cuz iconbutton takes too much space
+                                width: 20,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: const Icon(Icons.cancel_rounded,),
+                                  onPressed: () => print('Ooga ${_todoLists[index].title}'),
+                                )),
+                              //Name of list
+                              title: Text(
+                                textAlign: TextAlign.left,
+                                _todoLists[index].title,
+                                style: _biggerFont,
+                              ),
+                              //Selecting a list
+                              selected: index == _selectedListIndex,
+                              onTap: () {
+                                setState(() {
+                                  _selectedListIndex = index;
+                                });
+                            },
                           ),
-                        onPressed: () => print('Ooga ${_todoLists[index].title}'),
-                      )),
-                      //Name of list
-                      title: Text(
-                        textAlign: TextAlign.left,
-                        _todoLists[index].title,
-                        style: _biggerFont,
-                      ),
-                      //Selecting a list
-                      selected: index == _selectedListIndex,
-                      onTap: () {
-                        setState(() {
-                          _selectedListIndex = index;
-                        });
-                      },
-                    ),
-                  ));
-              })),
-        ),
+                        ));
+                      })),
+                ),
+              ],
+            )),
         //ToDo input
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
