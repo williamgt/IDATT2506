@@ -38,7 +38,6 @@ class MyToDoList extends StatefulWidget {
 }
 
 class _MyToDoListState extends State<MyToDoList> {
-  final _todos = <ToDo>[ToDo("Halla"), ToDo("Balla"), ToDo("Kronk")];
   final _todoLists = <ToDoList>[
     ToDoList('List1', 1),
     ToDoList('List2', 2),
@@ -114,16 +113,17 @@ class _MyToDoListState extends State<MyToDoList> {
               ),
             ],
           )),
-        //ToDo input
+        //ToDo input, renders only if a todo list is selected
+        if(_selectedListIndex > -1 && _selectedListIndex <= _todoLists.length)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: TextField(
-            enabled: _selectedListIndex > -1 && _selectedListIndex <= _todoLists.length,
+            //enabled: _selectedListIndex > -1 && _selectedListIndex <= _todoLists.length,
             controller: eCtrl,
             focusNode: fNode,
             onSubmitted: (value) {
               setState(() {
-                _todos.insert(0, ToDo(value)); // Add to start of _todos
+                _todoLists[_selectedListIndex].todos.insert(0, ToDo(value)); // Add to start of _todos
               }); // Redraw the Stateful Widget
               eCtrl.clear(); // Clear the Text area
               fNode.requestFocus(); // Put focus back on keyboard  
@@ -133,38 +133,39 @@ class _MyToDoListState extends State<MyToDoList> {
             ),
           ),
         ),
-        //ToDo list
+        //ToDo list, renders only if a todo list is selected
+        if(_selectedListIndex > -1 && _selectedListIndex <= _todoLists.length)
         Expanded(
           child: ListView.builder(
             //Consider using cards, maybe better if goind to change bg color
-            itemCount: _todos.length,
+            itemCount: _todoLists[_selectedListIndex].toDoAmount,
             padding: const EdgeInsets.all(16.0),
             itemBuilder: (context, index) {
               return ListTile(
                 onTap: () {
                   //_todos[index].isDone ? _todos[index].setDone = false : _todos[index].setDone = true;
                   //If element is done when tapped, must change state to undone. Move to top, TODO change in future?
-                  if (_todos[index].isDone) {
+                  if (_todoLists[_selectedListIndex].todos[index].isDone) {
                     setState(() {
-                      _todos[index].setDone = false;
-                      var todo = _todos.removeAt(index);
-                      _todos.insert(0, todo);
+                      _todoLists[_selectedListIndex].setToDoDone(index, false);
+                      var todo = _todoLists[_selectedListIndex].removeToDoAt(index);
+                      _todoLists[_selectedListIndex].todos.insert(0, todo);
                     });
                   }
                   //If it is not done, change state to done and move to the bottom
                   else {
                     setState(() {
-                      _todos[index].setDone = true;
-                      var todo = _todos.removeAt(index);
-                      _todos.add(todo);
+                      _todoLists[_selectedListIndex].setToDoDone(index, true);
+                      var todo = _todoLists[_selectedListIndex].removeToDoAt(index);
+                      _todoLists[_selectedListIndex].todos.add(todo);
                     });
                   }
                 },
-                tileColor: _todos[index].isDone
+                tileColor: _todoLists[_selectedListIndex].todos[index].isDone
                     ? const Color.fromARGB(255, 219, 241, 201)
                     : null,
                 title: Text(
-                  _todos[index].description,
+                  _todoLists[_selectedListIndex].todos[index].description,
                   style: _biggerFont,
                 ),
               );
