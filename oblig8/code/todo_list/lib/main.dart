@@ -66,7 +66,10 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
                   margin: const EdgeInsets.all(10),
                   child: IconButton(
                     padding: EdgeInsets.zero,
-                    onPressed: () => print('Plust'),
+                    onPressed: ()  { 
+                      final prom =  _addToDoListDialog(context); 
+                      prom.then((value) => print(value)); //Got value of new name here, persist new list, add it to _todoLists, change _todos and change _selectedListIndex
+                      },
                     icon: const Icon(Icons.add))),
                 //List of todo lists
                 Expanded(
@@ -171,4 +174,38 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
       ],
     );
   }
+}
+
+enum PopUpResult {cancel, approve, add}
+
+Future _addToDoListDialog(BuildContext context) async {
+  String? listName;
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Add ToDo list'),
+        content: TextField(
+            onSubmitted: (value) {
+              print('Submitted');
+              Navigator.pop(context, value);
+            },
+            onChanged: (value) => listName = value,
+            decoration: const InputDecoration(
+              hintText: 'Enter name of new list',
+            ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, PopUpResult.cancel),
+            child: const Text('Cancel'),
+            ),
+          TextButton(
+            child: const Text('Approve'),
+            onPressed: () => Navigator.pop(context, listName),
+          ),
+        ],
+      );
+    },
+  );
 }
