@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             title: const Text('ToDo List'),
           ),
           body: const Center(
-            child: ToDoListWidget(),
+            child: MyToDoList(),
           ),
         ),
       ),
@@ -30,14 +30,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ToDoListWidget extends StatefulWidget {
-  const ToDoListWidget({super.key});
+class MyToDoList extends StatefulWidget {
+  const MyToDoList({super.key});
 
   @override
-  State<ToDoListWidget> createState() => _ToDoListWidgetState();
+  State<MyToDoList> createState() => _MyToDoListState();
 }
 
-class _ToDoListWidgetState extends State<ToDoListWidget> {
+class _MyToDoListState extends State<MyToDoList> {
   final _todos = <ToDo>[ToDo("Halla"), ToDo("Balla"), ToDo("Kronk")];
   final _todoLists = <ToDoList>[
     ToDoList('List1', 1),
