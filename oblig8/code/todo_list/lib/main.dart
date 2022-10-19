@@ -91,7 +91,9 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
                                 child: IconButton(
                                   padding: EdgeInsets.zero,
                                   icon: const Icon(Icons.cancel_rounded,),
-                                  onPressed: () => print('Ooga ${_todoLists[index].title}'),
+                                  onPressed: () {
+                                    _deleteToDoListDialog(context, _todoLists[index].title).then((value) => print(value)); //Deleting todo list
+                                  },
                                 )),
                               //Name of list
                               title: Text(
@@ -182,6 +184,7 @@ Future _addToDoListDialog(BuildContext context) async {
   String? listName;
   return showDialog(
     context: context,
+    //barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Add ToDo list'),
@@ -202,7 +205,37 @@ Future _addToDoListDialog(BuildContext context) async {
             ),
           TextButton(
             child: const Text('Approve'),
-            onPressed: () => Navigator.pop(context, listName),
+            onPressed: () {
+              if(listName == null) {
+                return;
+              }
+              else {
+                Navigator.pop(context, listName);
+              }
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<PopUpResult?> _deleteToDoListDialog(BuildContext context, String listName) async {
+  return showDialog<PopUpResult>(
+    context: context,
+    //barrierDismissible: false, 
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Delete $listName'),
+        content: Text('Are you sure you want to delete $listName?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, PopUpResult.cancel),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            child: const Text('Approve'),
+            onPressed: () => Navigator.pop(context, PopUpResult.approve),
           ),
         ],
       );
