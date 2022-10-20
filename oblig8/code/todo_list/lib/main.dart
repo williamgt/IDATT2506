@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:todo_list/file_handler.dart';
 import 'package:todo_list/todo.dart';
 import 'package:todo_list/todo_list.dart';
 
@@ -38,18 +43,34 @@ class MyToDoList extends StatefulWidget {
 }
 
 class _MyToDoListState extends State<MyToDoList> {
-  final _todoLists = <ToDoList>[
-    ToDoList('List1', 1),
-    ToDoList('List2', 2),
-    ToDoList('List with verrry long name', 3),
-    ToDoList('Li', 4)
-  ];
+  final _todoLists = <ToDoList>[];
   int _selectedListIndex = -1;
 
   final TextEditingController eCtrl = TextEditingController();
   final FocusNode fNode = FocusNode();
 
   final _biggerFont = const TextStyle(fontSize: 18);
+
+  @override
+  void initState() {
+    super.initState();
+
+    FileHandler.readIndicies().then((value) { //Getting all ids of saved todo lists
+      var ids = List<int>.from(json.decode(value!)); 
+      for (var id in ids) { //Looping through ids of all saved data
+        FileHandler.readJsonFileById(id).then((value) { //Reading todo list by id
+          if(value != null){
+            print(jsonDecode(value));
+            var toDoList = ToDoList.fromJson(jsonDecode(value)); //Converting from json to todo list
+            print(toDoList.title);
+            setState(() { //Need to call this to get flutter to understand that something was added to _todoLists
+              _todoLists.add(toDoList); //Adding todo list to _todoLists
+             }); 
+          }
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +87,29 @@ class _MyToDoListState extends State<MyToDoList> {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: ()  { 
-                    final prom =  _addToDoListDialog(context); 
-                    prom.then((value) => print(value)); //Got value of new name here, persist new list, add it to _todoLists, change _todos and change _selectedListIndex
+                    var ids = _todoLists.map((element) => element.id);
+                    //Got value of new name here, persist new list, add it to _todoLists, change _todos and change _selectedListIndex
+                    _addToDoListDialog(context).then((value) {
+                      if(value is String) {
+                        var id = _todoLists.length;
+                        for (var e in _todoLists) { //Trying to get unique id
+                          if(e.id == id) id++;
+                        }
+                        var newList = ToDoList(value, id); //Maybe have unique 
+                        if(_todoLists.contains(newList)) {
+                          throw Exception('List ID already in use, something really wrong happened'); //If this ever happens, consider using some random string as id instead
+                        }
+                        //Writing new list to file
+                        FileHandler.writeJsonDataWithId(newList.toJson(), newList.id);
+                        //Updating ui
+                        setState(() {
+                          _todoLists.add(newList);
+                          _selectedListIndex = _todoLists.length - 1;
+                        });
+                        //Writing new indicies to file
+                        FileHandler.writeIndicies(_todoLists.map((element) => element.id).toList());
+                      } 
+                    });
                     },
                   icon: const Icon(Icons.add))),
               //List of todo lists
@@ -91,7 +133,15 @@ class _MyToDoListState extends State<MyToDoList> {
                               padding: EdgeInsets.zero,
                               icon: const Icon(Icons.cancel_rounded,),
                               onPressed: () {
-                                _deleteToDoListDialog(context, _todoLists[index].title).then((value) => print(value)); //Deleting todo list
+                                _deleteToDoListDialog(context, _todoLists[index].title).then((value) {
+                                  if(value == PopUpResult.approve) { //Deletion of todo list was approved
+                                  ToDoList deleted = _todoLists.removeAt(index); //Removing list
+                                  if(_selectedListIndex >= index)_selectedListIndex = index - 1; //Updating selected index if it's necessary 
+                                  setState(() {}); //Updating ui
+                                  FileHandler.deleteFile(deleted.id); //Deleting todo list file
+                                  FileHandler.writeIndicies(_todoLists.map((element) => element.id).toList()); //Updating indicies
+                                  }
+                                }); 
                               },
                             )),
                           //Name of list
@@ -118,7 +168,6 @@ class _MyToDoListState extends State<MyToDoList> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: TextField(
-            //enabled: _selectedListIndex > -1 && _selectedListIndex <= _todoLists.length,
             controller: eCtrl,
             focusNode: fNode,
             onSubmitted: (value) {
@@ -151,6 +200,7 @@ class _MyToDoListState extends State<MyToDoList> {
                       var todo = _todoLists[_selectedListIndex].removeToDoAt(index);
                       _todoLists[_selectedListIndex].todos.insert(0, todo);
                     });
+                    FileHandler.writeJsonDataWithId(_todoLists[_selectedListIndex].toJson(), _todoLists[_selectedListIndex].id);
                   }
                   //If it is not done, change state to done and move to the bottom
                   else {
@@ -158,6 +208,7 @@ class _MyToDoListState extends State<MyToDoList> {
                       _todoLists[_selectedListIndex].setToDoDone(index, true);
                       var todo = _todoLists[_selectedListIndex].removeToDoAt(index);
                       _todoLists[_selectedListIndex].todos.add(todo);
+                      FileHandler.writeJsonDataWithId(_todoLists[_selectedListIndex].toJson(), _todoLists[_selectedListIndex].id);
                     });
                   }
                 },
@@ -170,10 +221,6 @@ class _MyToDoListState extends State<MyToDoList> {
                 ),
               );
             },
-            /*  separatorBuilder: (BuildContext context, int index) =>
-                const Divider(
-              thickness: 1.0,
-            ), */
           ),
         )
       ],
