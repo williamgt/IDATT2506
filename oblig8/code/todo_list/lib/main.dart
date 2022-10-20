@@ -59,7 +59,7 @@ class _MyToDoListState extends State<MyToDoList> {
           height: 60,
           child: Row(
             children: <Widget>[
-              //Button or adding more lists
+              //Button for adding more lists
               Container(
                 width: 20,
                 margin: const EdgeInsets.all(10),
