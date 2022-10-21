@@ -174,7 +174,10 @@ class _MyToDoListState extends State<MyToDoList> {
             focusNode: fNode,
             onSubmitted: (value) {
               setState(() {
-                _todoLists[_selectedListIndex].todos.insert(0, ToDo(value)); // Add to start of _todos
+                if(value.isNotEmpty) {
+                  _todoLists[_selectedListIndex].todos.insert(0, ToDo(value)); // Add to start of _todos
+                  FileHandler.writeJsonDataWithId(_todoLists[_selectedListIndex].toJson(), _todoLists[_selectedListIndex].id); //Saving changes
+                }
               }); // Redraw the Stateful Widget
               eCtrl.clear(); // Clear the Text area
               fNode.requestFocus(); // Put focus back on keyboard  
