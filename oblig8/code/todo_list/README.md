@@ -1,16 +1,11 @@
 # todo_list
 
-A new Flutter project.
+A Flutter project for todo lists.
 
-## Getting Started
+# Installation and testing
 
-This project is a starting point for a Flutter application.
+Before running the project, Flutter sdk should be installed. If using VS Code, remember to install recommended extensions. More info about installing Flutter and setting up an editor at https://docs.flutter.dev/get-started/install.
 
-A few resources to get you started if this is your first Flutter project:
+When everything is set up, run the project from the main.dart file with as described under "Run the app" at https://docs.flutter.dev/get-started/test-drive?tab=vscode.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Development was done in VS Code with Pixel XL API 30 emulator on a Windows 10 machine.
