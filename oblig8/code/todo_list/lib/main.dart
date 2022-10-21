@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:todo_list/file_handler.dart';
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus
-          ?.unfocus(), //TODO May need some work idk
+          ?.unfocus(), 
       child: MaterialApp(
         title: 'ToDo List',
         home: Scaffold(
@@ -56,18 +55,21 @@ class _MyToDoListState extends State<MyToDoList> {
     super.initState();
 
     FileHandler.readIndicies().then((value) { //Getting all ids of saved todo lists
-      var ids = List<int>.from(json.decode(value!)); 
-      for (var id in ids) { //Looping through ids of all saved data
-        FileHandler.readJsonFileById(id).then((value) { //Reading todo list by id
-          if(value != null){
-            print(jsonDecode(value));
-            var toDoList = ToDoList.fromJson(jsonDecode(value)); //Converting from json to todo list
-            print(toDoList.title);
-            setState(() { //Need to call this to get flutter to understand that something was added to _todoLists
-              _todoLists.add(toDoList); //Adding todo list to _todoLists
-             }); 
-          }
-        });
+      try{
+        var ids = List<int>.from(json.decode(value!)); 
+        for (var id in ids) { //Looping through ids of all saved data
+          FileHandler.readJsonFileById(id).then((value) { //Reading todo list by id
+            if(value != null){
+              var toDoList = ToDoList.fromJson(jsonDecode(value)); //Converting from json to todo list
+              setState(() { //Need to call this to get flutter to understand that something was added to _todoLists
+                _todoLists.add(toDoList); //Adding todo list to _todoLists
+              }); 
+            }
+          });
+        }
+      }
+      catch (e) { //Tried to decode null value, meaning no file named indicies exists. Creating one.
+        FileHandler.writeIndicies([]);
       }
     });
   }
@@ -135,11 +137,11 @@ class _MyToDoListState extends State<MyToDoList> {
                               onPressed: () {
                                 _deleteToDoListDialog(context, _todoLists[index].title).then((value) {
                                   if(value == PopUpResult.approve) { //Deletion of todo list was approved
-                                  ToDoList deleted = _todoLists.removeAt(index); //Removing list
-                                  if(_selectedListIndex >= index)_selectedListIndex = index - 1; //Updating selected index if it's necessary 
-                                  setState(() {}); //Updating ui
-                                  FileHandler.deleteFile(deleted.id); //Deleting todo list file
-                                  FileHandler.writeIndicies(_todoLists.map((element) => element.id).toList()); //Updating indicies
+                                    ToDoList deleted = _todoLists.removeAt(index); //Removing list
+                                    if(_selectedListIndex >= index)_selectedListIndex = index - 1; //Updating selected index if it's necessary 
+                                    setState(() {}); //Updating ui
+                                    FileHandler.deleteFile(deleted.id); //Deleting todo list file
+                                    FileHandler.writeIndicies(_todoLists.map((element) => element.id).toList()); //Updating indicies
                                   }
                                 }); 
                               },
@@ -192,7 +194,6 @@ class _MyToDoListState extends State<MyToDoList> {
             itemBuilder: (context, index) {
               return ListTile(
                 onTap: () {
-                  //_todos[index].isDone ? _todos[index].setDone = false : _todos[index].setDone = true;
                   //If element is done when tapped, must change state to undone. Move to top, TODO change in future?
                   if (_todoLists[_selectedListIndex].todos[index].isDone) {
                     setState(() {
@@ -200,7 +201,6 @@ class _MyToDoListState extends State<MyToDoList> {
                       var todo = _todoLists[_selectedListIndex].removeToDoAt(index);
                       _todoLists[_selectedListIndex].todos.insert(0, todo);
                     });
-                    FileHandler.writeJsonDataWithId(_todoLists[_selectedListIndex].toJson(), _todoLists[_selectedListIndex].id);
                   }
                   //If it is not done, change state to done and move to the bottom
                   else {
@@ -208,9 +208,9 @@ class _MyToDoListState extends State<MyToDoList> {
                       _todoLists[_selectedListIndex].setToDoDone(index, true);
                       var todo = _todoLists[_selectedListIndex].removeToDoAt(index);
                       _todoLists[_selectedListIndex].todos.add(todo);
-                      FileHandler.writeJsonDataWithId(_todoLists[_selectedListIndex].toJson(), _todoLists[_selectedListIndex].id);
                     });
                   }
+                  FileHandler.writeJsonDataWithId(_todoLists[_selectedListIndex].toJson(), _todoLists[_selectedListIndex].id); //Saving changes
                 },
                 tileColor: _todoLists[_selectedListIndex].todos[index].isDone
                     ? const Color.fromARGB(255, 219, 241, 201)
@@ -231,7 +231,7 @@ class _MyToDoListState extends State<MyToDoList> {
 enum PopUpResult {cancel, approve, add}
 
 Future _addToDoListDialog(BuildContext context) async {
-  String? listName;
+  String listName = '';
   return showDialog(
     context: context,
     //barrierDismissible: false,
@@ -240,8 +240,7 @@ Future _addToDoListDialog(BuildContext context) async {
         title: const Text('Add ToDo list'),
         content: TextField(
             onSubmitted: (value) {
-              print('Submitted');
-              Navigator.pop(context, value);
+              Navigator.pop(context, value); //Return list name to prev screen when enter is hit
             },
             onChanged: (value) => listName = value,
             decoration: const InputDecoration(
@@ -256,11 +255,11 @@ Future _addToDoListDialog(BuildContext context) async {
           TextButton(
             child: const Text('Approve'),
             onPressed: () {
-              if(listName == null) {
+              if(listName.isEmpty) { //Wont approve if name is list name is empty
                 return;
               }
               else {
-                Navigator.pop(context, listName);
+                Navigator.pop(context, listName); //Return list name to prev screen when pressed approve
               }
             },
           ),

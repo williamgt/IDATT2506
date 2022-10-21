@@ -24,7 +24,6 @@ class FileHandler {
       final contents = await file.readAsString();
       return contents;
     } catch (e) {
-      print(e.toString()); //TODO remove in the future
       return null;
     }
   }
@@ -40,7 +39,6 @@ class FileHandler {
       final contents = await file.readAsString();
       return contents;
     } catch (e) {
-      print(e.toString()); //TODO remove in the future
       return null;
     }
   }
