@@ -122,7 +122,7 @@ class _MyToDoListState extends State<MyToDoList> {
                   itemBuilder: ((context, index) {
                     //calculating width of list elements
                     double w = _todoLists[index].title.length * 10 + 2 * 18; //10 per character and add offset equal to font size
-                    if (w < 100) w += 30; //If w is small, add more hoping it looks good
+                    while (w < 100) w += 20.0; //If w is small, add more hoping it looks good
                     return Card(
                       child: Container( //Need container cuz listtile takes too much space
                         width: w,
