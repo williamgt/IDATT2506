@@ -2,9 +2,17 @@
 
 A Flutter project for todo lists.
 
-# Installation and testing
+## Installation and testing
 
 Before running the project, Flutter sdk should be installed. If using VS Code, remember to install recommended extensions. More info about installing Flutter and setting up an editor at https://docs.flutter.dev/get-started/install.
+
+After opening the project in your editor of choice, prepare the proejct by running the commands
+
+```
+flutter pub upgrade
+flutter pub clean
+flutter pub get
+```
 
 When everything is set up, run the project from the main.dart file with as described under "Run the app" at https://docs.flutter.dev/get-started/test-drive?tab=vscode.
 
